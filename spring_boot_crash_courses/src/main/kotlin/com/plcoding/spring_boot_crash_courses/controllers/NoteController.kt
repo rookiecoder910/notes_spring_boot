@@ -28,7 +28,6 @@ class NoteController(
         val title: String,
         val content: String,
         val color: Long,
-        val ownerId: String
 
     )
     //the response send from backend server to frontend
@@ -37,14 +36,15 @@ class NoteController(
         val title: String,
         val content: String,
         val color: Long,
-        val createdAt: Instant,
-        val ownerId: String
+        val createdAt: Instant
+
 
 
     )
     @PostMapping
 
-    fun save(body: NoteRequest):NoteResponse {
+    fun save(@RequestBody
+        body: NoteRequest):NoteResponse {
        val note= repository.save(
             Note(
                 id=body.id?.let{ObjectId(it)} ?: ObjectId.get(),
@@ -52,7 +52,7 @@ class NoteController(
                 content = body.content,
                 color = body.color,
                 createdAt = Instant.now(),
-                ownerId = ObjectId(body.ownerId)
+                ownerId = ObjectId()
 
             )
         )
@@ -79,7 +79,7 @@ private fun Note.toResponse(): NoteController.NoteResponse {
         title = title,
         content = content,
         color = color,
-        createdAt = createdAt,
-        ownerId = ownerId.toHexString()
+        createdAt = createdAt
+
     )
 }
