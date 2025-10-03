@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="17">
+      <module name="spring_boot_crash_courses.model.main" target="21" />
+      <module name="spring_boot_crash_courses.model.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-parameters" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="spring_boot_crash_courses.model" options="" />
+      <module name="spring_boot_crash_courses.model.main" options="" />
+      <module name="spring_boot_crash_courses.model.test" options="" />
+    </option>
+  </component>
+</project>
