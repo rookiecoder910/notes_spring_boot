@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException
 import java.security.MessageDigest
 import java.time.Instant
 import java.util.*
-
+//fixed errors
 @Service
 class AuthService(
     private val jwtService: JwtService,
