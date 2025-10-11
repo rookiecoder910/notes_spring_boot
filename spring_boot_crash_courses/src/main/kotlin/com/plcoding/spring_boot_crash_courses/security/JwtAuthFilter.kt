@@ -1,4 +1,4 @@
-package com.plcoding.spring_boot_crash_courses.security
+package com.plcoding.spring_boot_crash_course.security
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -12,22 +12,21 @@ import org.springframework.web.filter.OncePerRequestFilter
 class JwtAuthFilter(
     private val jwtService: JwtService
 ): OncePerRequestFilter() {
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
-    ){
-        //Bearer<token>
-       val authHeader = request.getHeader("Authorization")
-        if(authHeader != null && authHeader.startsWith("Bearer ")){
-            if(jwtService.validateAccessToken(authHeader)){
-                val userId=jwtService.getUserIdFromToken(authHeader)
-                val auth= UsernamePasswordAuthenticationToken(userId, null)
+    ) {
+        val authHeader = request.getHeader("Authorization")
+        if(authHeader != null && authHeader.startsWith("Bearer ")) {
+            if(jwtService.validateAccessToken(authHeader)) {
+                val userId = jwtService.getUserIdFromToken(authHeader)
+                val auth = UsernamePasswordAuthenticationToken(userId, null, emptyList())
                 SecurityContextHolder.getContext().authentication = auth
             }
         }
+
         filterChain.doFilter(request, response)
     }
-
-
 }
