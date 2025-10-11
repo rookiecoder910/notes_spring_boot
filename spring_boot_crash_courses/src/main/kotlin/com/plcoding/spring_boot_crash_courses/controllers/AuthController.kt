@@ -1,6 +1,6 @@
-package com.plcoding.spring_boot_crash_course.controllers
+package com.plcoding.spring_boot_crash_courses.controllers
 
-import com.plcoding.spring_boot_crash_course.security.AuthService
+import com.plcoding.spring_boot_crash_courses.security.AuthService
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Pattern

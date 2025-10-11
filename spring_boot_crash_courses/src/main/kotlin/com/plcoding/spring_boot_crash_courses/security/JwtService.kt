@@ -1,4 +1,4 @@
-package com.plcoding.spring_boot_crash_course.security
+package com.plcoding.spring_boot_crash_courses.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts

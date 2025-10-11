@@ -1,10 +1,9 @@
-package com.plcoding.spring_boot_crash_course.security
+package com.plcoding.spring_boot_crash_courses.security
 
 
 import com.plcoding.spring_boot_crash_courses.database.model.User
 import com.plcoding.spring_boot_crash_courses.database.repository.RefreshTokenRepository
 import com.plcoding.spring_boot_crash_courses.database.repository.UserRepository
-import com.plcoding.spring_boot_crash_courses.security.RefreshToken
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -30,22 +29,25 @@ class AuthService(
 
     fun register(email: String, password: String): User {
         val user = userRepository.findByEmail(email.trim())
-        if(user != null) {
-            throw ResponseStatusException(HttpStatus.CONFLICT, "A user with that email already exists.")
+        if (user != null) {
+            throw ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "A user with that email already exists."
+            )
         }
         return userRepository.save(
             User(
-                email = email,
+                email = email.trim(),
                 hashedPassword = hashEncoder.encode(password)
             )
         )
     }
 
     fun login(email: String, password: String): TokenPair {
-        val user = userRepository.findByEmail(email)
+        val user = userRepository.findByEmail(email.trim())
             ?: throw BadCredentialsException("Invalid credentials.")
 
-        if(!hashEncoder.matches(password, user.hashedPassword)) {
+        if (!hashEncoder.matches(password, user.hashedPassword)) {
             throw BadCredentialsException("Invalid credentials.")
         }
 
@@ -62,8 +64,11 @@ class AuthService(
 
     @Transactional
     fun refresh(refreshToken: String): TokenPair {
-        if(!jwtService.validateRefreshToken(refreshToken)) {
-            throw ResponseStatusException(HttpStatusCode.valueOf(401), "Invalid refresh token.")
+        if (!jwtService.validateRefreshToken(refreshToken)) {
+            throw ResponseStatusException(
+                HttpStatusCode.valueOf(401),
+                "Invalid refresh token."
+            )
         }
 
         val userId = jwtService.getUserIdFromToken(refreshToken)

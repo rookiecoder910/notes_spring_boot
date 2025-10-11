@@ -1,4 +1,4 @@
-package com.plcoding.spring_boot_crash_course.security
+package com.plcoding.spring_boot_crash_courses.security
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -11,7 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtAuthFilter(
     private val jwtService: JwtService
-): OncePerRequestFilter() {
+) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -19,11 +19,17 @@ class JwtAuthFilter(
         filterChain: FilterChain
     ) {
         val authHeader = request.getHeader("Authorization")
-        if(authHeader != null && authHeader.startsWith("Bearer ")) {
-            if(jwtService.validateAccessToken(authHeader)) {
-                val userId = jwtService.getUserIdFromToken(authHeader)
-                val auth = UsernamePasswordAuthenticationToken(userId, null, emptyList())
-                SecurityContextHolder.getContext().authentication = auth
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            val token = authHeader.removePrefix("Bearer ").trim()
+            try {
+                if (jwtService.validateAccessToken(token)) {
+                    val userId = jwtService.getUserIdFromToken(token)
+                    val auth = UsernamePasswordAuthenticationToken(userId, null, emptyList())
+                    SecurityContextHolder.getContext().authentication = auth
+                }
+            } catch (e: Exception) {
+                println("JWT validation failed: ${e.message}")
             }
         }
 
